@@ -18,11 +18,13 @@ I build secure, automated and observable cloud platforms, and ship them through 
 
 ## About me
 
-- DevOps engineer with **6+ years in open-source digital health** and **420+ merged pull requests**.
-- **OpenMRS Platform 2.4 Release Manager** and **OpenMRS Fellow (2020/21)**, working on FHIR, PLIR and the analytics engine.
-- Software engineer at the **Digital Initiatives Group, University of Washington** (2022–2025), working on OpenELIS Global and Community Health Toolkit.
-- Today I focus on **AWS infrastructure as code, Kubernetes, DevSecOps pipelines and observability**.
-- Based in Kampala, Uganda · open to remote DevOps and cloud roles.
+- ☁️ **Cloud infrastructure:** I build AWS platforms entirely in **Terraform** and deploy them through **GitHub Actions OIDC**, with no long-lived credentials.
+- ⚙️ **Containers & orchestration:** I run containerized microservices on **Kubernetes**, with health checks, resource limits, persistent storage and Ingress.
+- 🔐 **DevSecOps:** I build pipelines that scan for secrets, code issues, vulnerable dependencies and image CVEs, and attach an **SBOM** to every image before it ships.
+- 📈 **Observability:** I monitor systems with **Prometheus, Grafana, CloudWatch and X-Ray**, using alarms, tracing, synthetic canaries and SLOs.
+- 🐧 **Linux & troubleshooting:** I diagnose systemd, networking and storage failures through reproducible labs and root-cause write-ups.
+- 🌍 **Background:** 6+ years in open-source digital health with 420+ merged PRs. I was **OpenMRS Platform 2.4 Release Manager** and an **OpenMRS Fellow**, then a software engineer at **DIGI, University of Washington** (2022–2025).
+- 📍 Based in Kampala, Uganda · open to remote DevOps and cloud roles.
 
 ---
 
