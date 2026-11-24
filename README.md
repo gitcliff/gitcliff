@@ -20,7 +20,8 @@ I build secure, automated and observable cloud platforms, and ship them through 
 
 - ☁️ **Cloud infrastructure:** I build AWS platforms entirely in **Terraform** and deploy them through **GitHub Actions OIDC**, with no long-lived credentials.
 - ⚙️ **Containers & orchestration:** I run containerized microservices on **Kubernetes**, with health checks, resource limits, persistent storage and Ingress.
-- 🔐 **DevSecOps:** I build pipelines that scan for secrets, code issues, vulnerable dependencies and image CVEs, and attach an **SBOM** to every image before it ships.
+- 🔐 **DevSecOps:** I build pipelines that scan for secrets, code issues, vulnerable dependencies and image CVEs, and attach an **SBOM** and build provenance to every image before it ships.
+- 🔁 **GitOps:** I deploy to **Amazon EKS** with Terraform and **Argo CD**, so Git is the source of truth for dev and prod.
 - 📈 **Observability:** I monitor systems with **Prometheus, Grafana, CloudWatch and X-Ray**, using alarms, tracing, synthetic canaries and SLOs.
 - 💰 **Cloud cost & governance:** I built a tool that scans an AWS account for cost waste and for security and IAM misconfigurations. Savings come from AWS pricing data, and its posture score counts checks it couldn't run as unknown, never as passed.
 - 🐧 **Linux & troubleshooting:** I diagnose systemd, networking and storage failures through reproducible labs and root-cause write-ups.
@@ -34,7 +35,7 @@ I build secure, automated and observable cloud platforms, and ship them through 
 | Project | What it shows | Stack |
 |---|---|---|
 | [**AWS Serverless Web Platform**](https://github.com/gitcliff/aws-serverless-web-platform) · [demo](https://www.youtube.com/watch?v=PMeldVsWBpc) | Six-tier reference architecture built entirely in Terraform. Deploys through GitHub Actions OIDC with no long-lived AWS keys. WAF on the edge, plus X-Ray tracing, CloudWatch alarms, Synthetics canaries and SLOs. | Terraform · Lambda · API Gateway · DynamoDB · CloudFront · WAF · Route 53 |
-| [**Microservices DevOps Stack**](https://github.com/gitcliff/microservices-devops-stack) | 7 containerized services deployed to Kubernetes, with Prometheus and Grafana in the cluster. Every PR passes 9 security and quality checks, and every image ships with an SBOM and a vulnerability scan before it is published. | Kubernetes · Docker · GitHub Actions · Trivy · Semgrep · Snyk · SonarQube |
+| [**Microservices DevOps Stack**](https://github.com/gitcliff/microservices-devops-stack) | 7 containerized services on **Amazon EKS**. Terraform builds the VPC, EKS, ECR and monitoring, and **Argo CD** (app-of-apps) deploys dev and prod from Git. Every PR passes 9 security and quality checks. Images are scanned, get an SBOM and build provenance, and reach Amazon ECR through GitHub OIDC with no stored AWS keys. | Terraform · EKS · Argo CD · Kustomize · GitHub Actions · Trivy · Prometheus/Grafana |
 | [**AI Cloud Cost & Governance Detective**](https://github.com/gitcliff/AI-Cloud-Cost-Detective) | Read-only AWS scanner (8 services, 16 regions) with two deterministic engines. **Cost:** 9 detectors price each saving from AWS pricing data, with its formula and a confidence level. **Governance:** 24 rules across security, IAM, operations and tagging produce a coverage-aware posture score, where an access-denied call is UNKNOWN and never a pass. Also has risk acceptance with expiry, editable account policies and SQL migrations. An LLM only explains findings. 290+ tests and CI with Gitleaks, Ruff, pytest, ESLint, Vitest and Trivy. | Python · FastAPI · boto3 · React · TypeScript · PostgreSQL · Docker |
 | [**Ubuntu Cloud Support Lab**](https://github.com/gitcliff/ubuntu-cloud-support-lab) | Reproducible break/fix labs for systemd, DNS, LVM, apt and LXD networking, each with a root-cause write-up. Includes a diagnostics script tested in CI. | Linux · Bash · bats · ShellCheck · Multipass/LXD |
 | [**Jenkins CI/CD Automation**](https://github.com/gitcliff/Build-Automation-CICD-with-Jenkins) | Declarative and multibranch pipelines, shared libraries, webhooks, automatic versioning, and Docker image builds pushed to Docker Hub and Nexus. | Jenkins · Groovy · Maven · Docker · Nexus |
@@ -60,10 +61,11 @@ flowchart LR
     M --> B[Build image + SBOM]
     B --> V{Critical CVEs?}
     V -->|yes| X[Block]
-    V -->|no| P[Push to Docker Hub<br/>by SHA + digest]
+    V -->|no| P[Push to Amazon ECR<br/>by SHA + digest]
+    P --> A[Argo CD syncs<br/>to EKS]
 ```
 
-Every job runs with least-privilege permissions, third-party actions are pinned to commit SHAs, and scan results go to GitHub code scanning.
+Every job runs with least-privilege permissions, AWS access uses GitHub OIDC, most third-party actions are pinned to commit SHAs, and scan results go to GitHub code scanning.
 
 ---
 
@@ -131,7 +133,7 @@ Every job runs with least-privilege permissions, third-party actions are pinned 
 
 ## Currently
 
-- 🔭 Taking the Kubernetes deployment further: Helm charts and GitOps with Argo CD
+- 🔭 Hardening the EKS platform: external secrets, SBOM signing and policy checks at admission
 - 🚀 Deploying the 3-tier app to Amazon EKS with Terraform
 - 📚 Preparing for AWS certification
 
