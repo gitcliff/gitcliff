@@ -134,7 +134,6 @@ Every job runs with least-privilege permissions, AWS access uses GitHub OIDC, mo
 ## Currently
 
 - 🔭 Hardening the EKS platform: external secrets, SBOM signing and policy checks at admission
-- 🚀 Deploying the 3-tier app to Amazon EKS with Terraform
 - 📚 Preparing for AWS certification
 
 ---
